@@ -1,0 +1,47 @@
+＜通常環境でのセッティング方法＞
+# ローカルでのユーザー設定
+$ git config --global user.email "you@example.com"
+$ git config --global user.name "Your Name"
+
+# 秘密鍵・公開鍵のペアを生成する
+$ ssh-keygen -t rsa -b 4096 -C "you@example.com"
+
+# 以下が実行結果
+Generating public/private rsa key pair.
+# 鍵ファイルを保存するフォルダの設定（ここで"id_rsa"の名前を変えることも可）
+Enter file in which to save the key (/home/hogehoge/.ssh/id_rsa): 
+Created directory '/home/hogehoge/.ssh'.
+# パスフレーズの設定
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /home/wtb/.ssh/id_rsa.
+Your public key has been saved in /home/wtb/.ssh/id_rsa.pub.
+The key fingerprint is:
+…
+The key's randomart image is:
++---[RSA 4096]----+
+
++----[SHA256]-----+
+
+# 生成された秘密鍵のパーミッションを600に変更
+$ chmod 600 ~/.ssh/id_rsa
+
+# 正しいパーミッションに変更できているかの確認（-rw----ならOK）
+$ ls -la ~/.ssh/id_rsa
+-rw-------  1 hoge  staff  **** 1 1 00:00 /Users/hoge/.ssh/id_rsa
+
+# 以下の設定を、ファイルが存在しない場合は新規作成し、すでにあれば追記
+$ vim ~/.ssh/config
+
+Host github
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/id_rsa
+
+# 公開鍵の内容をgithubに登録
+/Users/hoge/.ssh/id_rsa.pubの内容
+
+# GitHubへのSSH接続を確認する
+$ ssh github
+Hi github-sample! You've successfully authenticated, but GitHub does not provide shell access.
+ならOK
